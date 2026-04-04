@@ -20,6 +20,8 @@ import {
   MessagesSquare,
   ShieldCheck,
   Award,
+  UtensilsCrossed,
+  CalendarDays,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
@@ -71,6 +73,16 @@ export const sidebarData: SidebarData = {
           title: 'Empleados',
           url: '/employees',
           icon: Users,
+        },
+        {
+          title: 'Platos',
+          url: '/dishes',
+          icon: UtensilsCrossed,
+        },
+        {
+          title: 'Menú del Día',
+          url: '/daily-menu',
+          icon: CalendarDays,
         },
         {
           title: 'Secured by Clerk',

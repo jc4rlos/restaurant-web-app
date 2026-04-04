@@ -29,6 +29,8 @@ import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedEmployeesIndexRouteImport } from './routes/_authenticated/employees/index'
+import { Route as AuthenticatedDishesIndexRouteImport } from './routes/_authenticated/dishes/index'
+import { Route as AuthenticatedDailyMenuIndexRouteImport } from './routes/_authenticated/daily-menu/index'
 import { Route as AuthenticatedChatsIndexRouteImport } from './routes/_authenticated/chats/index'
 import { Route as AuthenticatedCategoriesIndexRouteImport } from './routes/_authenticated/categories/index'
 import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
@@ -141,6 +143,18 @@ const AuthenticatedEmployeesIndexRoute =
     path: '/employees/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedDishesIndexRoute =
+  AuthenticatedDishesIndexRouteImport.update({
+    id: '/dishes/',
+    path: '/dishes/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedDailyMenuIndexRoute =
+  AuthenticatedDailyMenuIndexRouteImport.update({
+    id: '/daily-menu/',
+    path: '/daily-menu/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedChatsIndexRoute = AuthenticatedChatsIndexRouteImport.update({
   id: '/chats/',
   path: '/chats/',
@@ -222,6 +236,8 @@ export interface FileRoutesByFullPath {
   '/apps/': typeof AuthenticatedAppsIndexRoute
   '/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/chats/': typeof AuthenticatedChatsIndexRoute
+  '/daily-menu/': typeof AuthenticatedDailyMenuIndexRoute
+  '/dishes/': typeof AuthenticatedDishesIndexRoute
   '/employees/': typeof AuthenticatedEmployeesIndexRoute
   '/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -250,6 +266,8 @@ export interface FileRoutesByTo {
   '/apps': typeof AuthenticatedAppsIndexRoute
   '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/chats': typeof AuthenticatedChatsIndexRoute
+  '/daily-menu': typeof AuthenticatedDailyMenuIndexRoute
+  '/dishes': typeof AuthenticatedDishesIndexRoute
   '/employees': typeof AuthenticatedEmployeesIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
@@ -283,6 +301,8 @@ export interface FileRoutesById {
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
   '/_authenticated/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
+  '/_authenticated/daily-menu/': typeof AuthenticatedDailyMenuIndexRoute
+  '/_authenticated/dishes/': typeof AuthenticatedDishesIndexRoute
   '/_authenticated/employees/': typeof AuthenticatedEmployeesIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
@@ -314,6 +334,8 @@ export interface FileRouteTypes {
     | '/apps/'
     | '/categories/'
     | '/chats/'
+    | '/daily-menu/'
+    | '/dishes/'
     | '/employees/'
     | '/help-center/'
     | '/settings/'
@@ -342,6 +364,8 @@ export interface FileRouteTypes {
     | '/apps'
     | '/categories'
     | '/chats'
+    | '/daily-menu'
+    | '/dishes'
     | '/employees'
     | '/help-center'
     | '/settings'
@@ -374,6 +398,8 @@ export interface FileRouteTypes {
     | '/_authenticated/apps/'
     | '/_authenticated/categories/'
     | '/_authenticated/chats/'
+    | '/_authenticated/daily-menu/'
+    | '/_authenticated/dishes/'
     | '/_authenticated/employees/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
@@ -537,6 +563,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEmployeesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/dishes/': {
+      id: '/_authenticated/dishes/'
+      path: '/dishes'
+      fullPath: '/dishes/'
+      preLoaderRoute: typeof AuthenticatedDishesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/daily-menu/': {
+      id: '/_authenticated/daily-menu/'
+      path: '/daily-menu'
+      fullPath: '/daily-menu/'
+      preLoaderRoute: typeof AuthenticatedDailyMenuIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/chats/': {
       id: '/_authenticated/chats/'
       path: '/chats'
@@ -640,6 +680,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
   AuthenticatedCategoriesIndexRoute: typeof AuthenticatedCategoriesIndexRoute
   AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
+  AuthenticatedDailyMenuIndexRoute: typeof AuthenticatedDailyMenuIndexRoute
+  AuthenticatedDishesIndexRoute: typeof AuthenticatedDishesIndexRoute
   AuthenticatedEmployeesIndexRoute: typeof AuthenticatedEmployeesIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
@@ -652,6 +694,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
   AuthenticatedCategoriesIndexRoute: AuthenticatedCategoriesIndexRoute,
   AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
+  AuthenticatedDailyMenuIndexRoute: AuthenticatedDailyMenuIndexRoute,
+  AuthenticatedDishesIndexRoute: AuthenticatedDishesIndexRoute,
   AuthenticatedEmployeesIndexRoute: AuthenticatedEmployeesIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
