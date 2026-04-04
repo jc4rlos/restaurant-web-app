@@ -1,6 +1,6 @@
 import { type Database } from '@/lib/database.types'
 import { supabase } from '@/lib/supabase'
-import { type Employee } from './schema'
+import { type Employee, type EmployeeRole } from './schema'
 
 type DbEmployee = Database['public']['Tables']['employee']['Row']
 type DbEmployeeInsert = Database['public']['Tables']['employee']['Insert']
@@ -60,7 +60,7 @@ export const getEmployees = async (
       `first_name.ilike.%${search}%,last_name.ilike.%${search}%`
     )
   }
-  if (role?.length) query = query.in('role', role)
+  if (role?.length) query = query.in('role', role as EmployeeRole[])
   if (isActive?.length === 1)
     query = query.eq('is_active', isActive[0] === 'true')
 
