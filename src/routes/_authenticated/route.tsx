@@ -1,11 +1,13 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/stores/auth-store'
-import { getEmployeeByUserId } from '@/features/auth/auth-service'
+import { supabase } from '@/lib/supabase'
 import { AuthenticatedLayout } from '@/components/layout/authenticated-layout'
+import { getEmployeeByUserId } from '@/features/auth/auth-service'
 
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async () => {
+    if (import.meta.env.VITE_DISABLE_AUTH === 'true') return
+
     const { auth } = useAuthStore.getState()
 
     const isStoreValid =
