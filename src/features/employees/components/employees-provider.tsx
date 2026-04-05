@@ -8,7 +8,7 @@ import {
 import useDialogState from '@/hooks/use-dialog-state'
 import { type Employee } from '../data/schema'
 
-type EmployeesDialogType = 'add' | 'edit' | 'delete'
+type EmployeesDialogType = 'add' | 'edit' | 'delete' | 'access'
 
 type EmployeesContextType = {
   open: EmployeesDialogType | null

@@ -122,6 +122,7 @@ export const EmployeesActionDialog = ({
       email: values.email || null,
       hireDate: values.hireDate,
       isActive: values.isActive,
+      authUserId: currentRow?.authUserId ?? null,
     }
 
     if (isEdit) {

@@ -1,6 +1,6 @@
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
 import { type Row } from '@tanstack/react-table'
-import { Pencil, Trash2 } from 'lucide-react'
+import { KeyRound, Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -13,25 +13,20 @@ import {
 import { type Employee } from '../data/schema'
 import { useEmployeesContext } from './employees-provider'
 
-type DataTableRowActionsProps = {
-  row: Row<Employee>
-}
+type Props = { row: Row<Employee> }
 
-export const DataTableRowActions = ({ row }: DataTableRowActionsProps) => {
+export const DataTableRowActions = ({ row }: Props) => {
   const { setOpen, setCurrentRow } = useEmployeesContext()
 
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant='ghost'
-          className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'
-        >
+        <Button variant='ghost' className='flex h-8 w-8 p-0 data-[state=open]:bg-muted'>
           <DotsHorizontalIcon className='h-4 w-4' />
           <span className='sr-only'>Open menu</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end' className='w-40'>
+      <DropdownMenuContent align='end' className='w-44'>
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(row.original)
@@ -39,9 +34,16 @@ export const DataTableRowActions = ({ row }: DataTableRowActionsProps) => {
           }}
         >
           Editar
-          <DropdownMenuShortcut>
-            <Pencil size={16} />
-          </DropdownMenuShortcut>
+          <DropdownMenuShortcut><Pencil size={16} /></DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            setCurrentRow(row.original)
+            setOpen('access')
+          }}
+        >
+          Gestionar acceso
+          <DropdownMenuShortcut><KeyRound size={16} /></DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -52,9 +54,7 @@ export const DataTableRowActions = ({ row }: DataTableRowActionsProps) => {
           }}
         >
           Eliminar
-          <DropdownMenuShortcut>
-            <Trash2 size={16} />
-          </DropdownMenuShortcut>
+          <DropdownMenuShortcut><Trash2 size={16} /></DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

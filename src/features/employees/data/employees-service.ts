@@ -1,5 +1,6 @@
 import { type Database } from '@/lib/database.types'
 import { supabase } from '@/lib/supabase'
+import { createAuthUser, deleteAuthUser } from '@/features/auth/auth-service'
 import { type Employee, type EmployeeRole } from './schema'
 
 type DbEmployee = Database['public']['Tables']['employee']['Row']
@@ -26,7 +27,7 @@ export type PaginatedEmployees = {
 }
 
 const SELECT_FIELDS =
-  'id, branch_id, first_name, last_name, document_number, role, phone, email, hire_date, is_active'
+  'id, branch_id, first_name, last_name, document_number, role, phone, email, hire_date, is_active, auth_user_id'
 
 const toEmployee = (row: DbEmployee): Employee => ({
   id: row.id,
@@ -39,6 +40,7 @@ const toEmployee = (row: DbEmployee): Employee => ({
   email: row.email,
   hireDate: row.hire_date,
   isActive: row.is_active,
+  authUserId: row.auth_user_id ?? null,
 })
 
 export const getEmployees = async (
@@ -150,6 +152,36 @@ export const deleteEmployees = async (ids: number[]): Promise<void> => {
     .in('id', ids)
 
   if (error) throw new Error(error.message)
+}
+
+export const linkEmployeeAccess = async (
+  employeeId: number,
+  email: string,
+  tempPassword: string
+): Promise<void> => {
+  const authUserId = await createAuthUser(email, tempPassword)
+  const { error } = await supabase
+    .from('employee')
+    .update({ auth_user_id: authUserId, updated_at: new Date().toISOString() })
+    .eq('id', employeeId)
+
+  if (error) {
+    await deleteAuthUser(authUserId).catch(() => null)
+    throw new Error(error.message)
+  }
+}
+
+export const unlinkEmployeeAccess = async (
+  employeeId: number,
+  authUserId: string
+): Promise<void> => {
+  const { error } = await supabase
+    .from('employee')
+    .update({ auth_user_id: null, updated_at: new Date().toISOString() })
+    .eq('id', employeeId)
+
+  if (error) throw new Error(error.message)
+  await deleteAuthUser(authUserId)
 }
 
 export const getBranches = async (): Promise<Branch[]> => {
