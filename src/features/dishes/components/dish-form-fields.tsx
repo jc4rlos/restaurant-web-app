@@ -116,6 +116,7 @@ export const DishFormFields = ({
               placeholder='0.00'
               className='col-span-4'
               {...field}
+              onChange={(e) => field.onChange(Number(e.target.value))}
             />
           </FormControl>
           <FormMessage className='col-span-4 col-start-3' />

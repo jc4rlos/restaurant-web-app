@@ -81,6 +81,7 @@ export const MenuItemEditDialog = ({ item, open, onOpenChange }: Props) => {
                       step='0.01'
                       className='col-span-4'
                       {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage className='col-span-4 col-start-3' />
@@ -101,6 +102,7 @@ export const MenuItemEditDialog = ({ item, open, onOpenChange }: Props) => {
                       step='1'
                       className='col-span-4'
                       {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
                   <FormMessage className='col-span-4 col-start-3' />
