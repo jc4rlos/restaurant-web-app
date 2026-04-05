@@ -32,7 +32,7 @@ jobs:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           VITE_DISABLE_AUTH: ${{ secrets.VITE_DISABLE_AUTH }}
-          VITE_DISH_IMAGES_BUCKET_URL: ${{ secrets.VITE_DISH_IMAGES_BUCKET_URL }}
+          VITE_DISH_IMAGES_BUCKET: ${{ secrets.VITE_DISH_IMAGES_BUCKET }}
           VITE_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.VITE_SUPABASE_SERVICE_ROLE_KEY }}
 
       - name: Deploy to Cloudflare Pages
