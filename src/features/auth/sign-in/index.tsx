@@ -1,8 +1,10 @@
+import { Link } from '@tanstack/react-router'
 import { useSearch } from '@tanstack/react-router'
 import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
@@ -18,12 +20,20 @@ export function SignIn() {
         <CardHeader>
           <CardTitle className='text-lg tracking-tight'>Iniciar sesión</CardTitle>
           <CardDescription>
-            Ingresa tu email y te enviaremos un código de verificación.
+            Ingresa tu correo y contraseña para acceder al sistema.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <UserAuthForm redirectTo={redirect} />
         </CardContent>
+        <CardFooter>
+          <Link
+            to='/forgot-password'
+            className='mx-auto text-sm text-muted-foreground underline-offset-4 hover:text-primary hover:underline'
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </CardFooter>
       </Card>
     </AuthLayout>
   )

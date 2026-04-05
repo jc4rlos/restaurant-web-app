@@ -31,6 +31,7 @@ export const employeeSchema = z.object({
   email: z.string().nullable(),
   hireDate: z.string(),
   isActive: z.boolean(),
+  authUserId: z.string().nullable(),
 })
 
 export type Employee = z.infer<typeof employeeSchema>

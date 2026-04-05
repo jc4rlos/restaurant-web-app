@@ -1,3 +1,4 @@
+import { EmployeeAccessDialog } from './employee-access-dialog'
 import { EmployeesActionDialog } from './employees-action-dialog'
 import { EmployeesDeleteDialog } from './employees-delete-dialog'
 import { useEmployeesContext } from './employees-provider'
@@ -33,6 +34,16 @@ export const EmployeesDialogs = () => {
               setTimeout(() => setCurrentRow(null), 500)
             }}
             currentRow={currentRow}
+          />
+
+          <EmployeeAccessDialog
+            key={`employee-access-${currentRow.id}`}
+            open={open === 'access'}
+            onOpenChange={() => {
+              setOpen('access')
+              setTimeout(() => setCurrentRow(null), 500)
+            }}
+            employee={currentRow}
           />
         </>
       )}

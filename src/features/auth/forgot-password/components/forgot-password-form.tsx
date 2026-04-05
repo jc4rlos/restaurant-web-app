@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from '@tanstack/react-router'
 import { ArrowRight, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
-import { sleep, cn } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,47 +15,52 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { sendPasswordResetEmail } from '../../auth-service'
 
 const formSchema = z.object({
-  email: z.email({
-    error: (iss) => (iss.input === '' ? 'Please enter your email' : undefined),
-  }),
+  email: z.email('Ingresa un email válido.'),
 })
+
+type FormValues = z.infer<typeof formSchema>
 
 export function ForgotPasswordForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLFormElement>) {
-  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
+  const [sent, setSent] = useState(false)
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: '' },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit({ email }: FormValues) {
     setIsLoading(true)
-    // eslint-disable-next-line no-console
-    console.log(data)
+    try {
+      await sendPasswordResetEmail(email)
+      setSent(true)
+      toast.success(`Enlace enviado a ${email}`)
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Error al enviar el enlace.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-    toast.promise(sleep(2000), {
-      loading: 'Sending email...',
-      success: () => {
-        setIsLoading(false)
-        form.reset()
-        navigate({ to: '/otp', search: { email: data.email } })
-        return `Email sent to ${data.email}`
-      },
-      error: 'Error',
-    })
+  if (sent) {
+    return (
+      <p className='text-center text-sm text-muted-foreground'>
+        Revisa tu bandeja de entrada. Haz clic en el enlace para restablecer tu contraseña.
+      </p>
+    )
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn('grid gap-2', className)}
+        className={cn('grid gap-3', className)}
         {...props}
       >
         <FormField
@@ -66,15 +70,15 @@ export function ForgotPasswordForm({
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder='name@example.com' {...field} />
+                <Input placeholder='tu@email.com' type='email' autoComplete='email' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
         <Button className='mt-2' disabled={isLoading}>
-          Continue
-          {isLoading ? <Loader2 className='animate-spin' /> : <ArrowRight />}
+          {isLoading ? <Loader2 className='animate-spin' /> : <ArrowRight size={16} />}
+          Enviar enlace
         </Button>
       </form>
     </Form>

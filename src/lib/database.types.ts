@@ -273,14 +273,90 @@ export type Database = {
           },
         ]
       }
+      menu_item: {
+        Row: {
+          created_at: string
+          created_by: string
+          icon: string | null
+          id: number
+          is_active: boolean
+          label: string
+          parent_id: number | null
+          path: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          icon?: string | null
+          id?: number
+          is_active?: boolean
+          label: string
+          parent_id?: number | null
+          path: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          icon?: string | null
+          id?: number
+          is_active?: boolean
+          label?: string
+          parent_id?: number | null
+          path?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_item_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "menu_item"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      menu_role_permission: {
+        Row: {
+          enabled: boolean
+          id: number
+          menu_item_id: number
+          role: Database["public"]["Enums"]["employee_role"]
+        }
+        Insert: {
+          enabled?: boolean
+          id?: number
+          menu_item_id: number
+          role: Database["public"]["Enums"]["employee_role"]
+        }
+        Update: {
+          enabled?: boolean
+          id?: number
+          menu_item_id?: number
+          role?: Database["public"]["Enums"]["employee_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_role_permission_menu_item_id_fkey"
+            columns: ["menu_item_id"]
+            isOneToOne: false
+            referencedRelation: "menu_item"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order: {
         Row: {
           branch_id: number
           created_at: string
           created_by: string
+          customer_name: string | null
+          customer_phone: string | null
           deleted_at: string | null
           id: number
           notes: string | null
+          order_type: Database["public"]["Enums"]["order_type"]
           ordered_at: string
           status: Database["public"]["Enums"]["order_status"]
           table_id: number | null
@@ -293,9 +369,12 @@ export type Database = {
           branch_id: number
           created_at?: string
           created_by: string
+          customer_name?: string | null
+          customer_phone?: string | null
           deleted_at?: string | null
           id?: number
           notes?: string | null
+          order_type?: Database["public"]["Enums"]["order_type"]
           ordered_at?: string
           status?: Database["public"]["Enums"]["order_status"]
           table_id?: number | null
@@ -308,9 +387,12 @@ export type Database = {
           branch_id?: number
           created_at?: string
           created_by?: string
+          customer_name?: string | null
+          customer_phone?: string | null
           deleted_at?: string | null
           id?: number
           notes?: string | null
+          order_type?: Database["public"]["Enums"]["order_type"]
           ordered_at?: string
           status?: Database["public"]["Enums"]["order_status"]
           table_id?: number | null
@@ -339,6 +421,65 @@ export type Database = {
             columns: ["waiter_id"]
             isOneToOne: false
             referencedRelation: "employee"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_delivery: {
+        Row: {
+          address: string | null
+          created_at: string
+          created_by: string
+          delivered_at: string | null
+          delivery_fee: number
+          district: string | null
+          estimated_at: string | null
+          id: number
+          order_id: number
+          phone: string | null
+          recipient_name: string
+          reference: string | null
+          updated_at: string | null
+          updated_by: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          created_by: string
+          delivered_at?: string | null
+          delivery_fee?: number
+          district?: string | null
+          estimated_at?: string | null
+          id?: number
+          order_id: number
+          phone?: string | null
+          recipient_name: string
+          reference?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          created_by?: string
+          delivered_at?: string | null
+          delivery_fee?: number
+          district?: string | null
+          estimated_at?: string | null
+          id?: number
+          order_id?: number
+          phone?: string | null
+          recipient_name?: string
+          reference?: string | null
+          updated_at?: string | null
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_delivery_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: true
+            referencedRelation: "order"
             referencedColumns: ["id"]
           },
         ]
@@ -455,7 +596,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_access: { Args: never; Returns: Json }
     }
     Enums: {
       employee_role:
@@ -471,6 +612,10 @@ export type Database = {
         | "READY"
         | "DELIVERED"
         | "CANCELLED"
+        | "CONFIRMED"
+        | "PREPARING"
+        | "ON_THE_WAY"
+      order_type: "DINE_IN" | "DELIVERY" | "TAKEAWAY"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -612,7 +757,11 @@ export const Constants = {
         "READY",
         "DELIVERED",
         "CANCELLED",
+        "CONFIRMED",
+        "PREPARING",
+        "ON_THE_WAY",
       ],
+      order_type: ["DINE_IN", "DELIVERY", "TAKEAWAY"],
     },
   },
 } as const

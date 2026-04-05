@@ -11,7 +11,7 @@ import { AuthLayout } from '../auth-layout'
 import { OtpForm } from './components/otp-form'
 
 export function Otp() {
-  const { email, redirect } = useSearch({ from: '/(auth)/otp' })
+  const { email } = useSearch({ from: '/(auth)/otp' })
 
   return (
     <AuthLayout>
@@ -26,7 +26,7 @@ export function Otp() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <OtpForm email={email} redirectTo={redirect} />
+          <OtpForm />
         </CardContent>
         <CardFooter>
           <p className='px-8 text-center text-sm text-muted-foreground'>

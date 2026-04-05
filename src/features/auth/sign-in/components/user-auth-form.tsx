@@ -3,9 +3,10 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
-import { Loader2, Send } from 'lucide-react'
+import { Loader2, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/stores/auth-store'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,40 +17,56 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { sendOtp } from '../../auth-service'
+import { PasswordInput } from '@/components/password-input'
+import { signInWithPassword, getEmployeeByUserId } from '../../auth-service'
+import { getMenuItemsForRole } from '@/features/permissions/data/menu-service'
 
 const formSchema = z.object({
   email: z.email('Ingresa un email válido.'),
+  password: z.string().min(1, 'La contraseña es requerida.'),
 })
+
+type FormValues = z.infer<typeof formSchema>
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   redirectTo?: string
 }
 
-export function UserAuthForm({
-  className,
-  redirectTo,
-  ...props
-}: UserAuthFormProps) {
+export function UserAuthForm({ className, redirectTo, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
+  const { auth } = useAuthStore()
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: '' },
+    defaultValues: { email: '', password: '' },
   })
 
-  async function onSubmit({ email }: z.infer<typeof formSchema>) {
+  async function onSubmit({ email, password }: FormValues) {
     setIsLoading(true)
     try {
-      await sendOtp(email)
-      toast.success(`Código enviado a ${email}`)
-      navigate({
-        to: '/otp',
-        search: { email, ...(redirectTo ? { redirect: redirectTo } : {}) },
+      const session = await signInWithPassword(email, password)
+
+      if (session.user.user_metadata?.must_change_password) {
+        navigate({ to: '/change-password', replace: true })
+        return
+      }
+
+      const employee = await getEmployeeByUserId(session.user.id)
+      auth.setUser({
+        employeeId: employee.id,
+        email: session.user.email ?? email,
+        role: employee.role,
+        exp: (session.expires_at ?? 0) * 1000,
       })
+      auth.setAccessToken(session.access_token)
+
+      const menuItems = await getMenuItemsForRole(employee.role)
+      auth.setMenuItems(menuItems)
+
+      navigate({ to: redirectTo || '/', replace: true })
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al enviar el código.')
+      toast.error(err instanceof Error ? err.message : 'Error al iniciar sesión.')
     } finally {
       setIsLoading(false)
     }
@@ -80,9 +97,26 @@ export function UserAuthForm({
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name='password'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contraseña</FormLabel>
+              <FormControl>
+                <PasswordInput
+                  placeholder='••••••••'
+                  autoComplete='current-password'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Button className='mt-2' disabled={isLoading}>
-          {isLoading ? <Loader2 className='animate-spin' /> : <Send size={16} />}
-          Enviar código
+          {isLoading ? <Loader2 className='animate-spin' /> : <LogIn size={16} />}
+          Ingresar
         </Button>
       </form>
     </Form>

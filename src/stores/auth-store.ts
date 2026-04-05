@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
+import { type MenuItem } from '@/features/permissions/data/menu-service'
 
 const ACCESS_TOKEN = 'thisisjustarandomstring'
 
@@ -18,6 +19,8 @@ interface AuthState {
     setAccessToken: (accessToken: string) => void
     resetAccessToken: () => void
     reset: () => void
+    menuItems: MenuItem[]
+    setMenuItems: (items: MenuItem[]) => void
   }
 }
 
@@ -45,9 +48,12 @@ export const useAuthStore = create<AuthState>()((set) => {
           removeCookie(ACCESS_TOKEN)
           return {
             ...state,
-            auth: { ...state.auth, user: null, accessToken: '' },
+            auth: { ...state.auth, user: null, accessToken: '', menuItems: [] },
           }
         }),
+      menuItems: [],
+      setMenuItems: (menuItems) =>
+        set((state) => ({ ...state, auth: { ...state.auth, menuItems } })),
     },
   }
 })

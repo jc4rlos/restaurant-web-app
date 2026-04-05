@@ -4,13 +4,15 @@ import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { useMenuSummaries } from './hooks/use-daily-menu'
-import { DailyMenuProvider } from './components/daily-menu-provider'
 import { DailyMenuPrimaryButtons } from './components/daily-menu-primary-buttons'
+import {
+  DailyMenuProvider,
+  useDailyMenuContext,
+} from './components/daily-menu-provider'
 import { MenuCreateDialog } from './components/menu-create-dialog'
 import { MenuDetailSheet } from './components/menu-detail-sheet'
 import { MenuList } from './components/menu-list'
-import { useDailyMenuContext } from './components/daily-menu-provider'
+import { useMenuSummaries } from './hooks/use-daily-menu'
 
 const DailyMenuContent = () => {
   const { isCreateOpen, setIsCreateOpen } = useDailyMenuContext()
@@ -47,10 +49,7 @@ const DailyMenuContent = () => {
         <MenuList summaries={summaries} isLoading={isLoading} />
       </Main>
 
-      <MenuCreateDialog
-        open={isCreateOpen}
-        onOpenChange={setIsCreateOpen}
-      />
+      <MenuCreateDialog open={isCreateOpen} onOpenChange={setIsCreateOpen} />
 
       <MenuDetailSheet />
     </>
