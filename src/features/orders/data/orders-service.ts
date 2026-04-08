@@ -53,11 +53,6 @@ type DbOrderDeliveryRow = {
 }
 
 
-type DbEmployee = {
-  first_name: string
-  last_name: string
-  role: string | null
-}
 
 const toOrderItem = (row: DbOrderItemRow): OrderItem => ({
   id: row.id,
@@ -199,7 +194,7 @@ export const getEmployeeById = async (id: number): Promise<{ name: string; role:
     .single()
 
   if (error) throw new Error(error.message)
-  const employee = data as DbEmployee
+  const employee = data as { first_name: string; last_name: string; role: string | null }
   return {
     name: `${employee.first_name} ${employee.last_name}`,
     role: employee.role,
