@@ -25,7 +25,6 @@ type DbOrderRow = {
   ordered_at: string
   branch: { name: string } | null
   restaurant_table: { number: string } | null
-  employee: { first_name: string; last_name: string; role: string | null } | null
   order_item: DbOrderItemRow[]
   order_delivery: DbOrderDeliveryRow | null
 }
@@ -82,7 +81,6 @@ const ORDER_SELECT = `
   customer_name, customer_phone, notes, total_amount, ordered_at,
   branch(name),
   restaurant_table(number),
-  employee(first_name, last_name, role),
   order_item(id, order_id, dish_id, quantity, unit_price, subtotal, notes, dish(name, image_url)),
   order_delivery(id, recipient_name, phone, address, reference, district, delivery_fee, estimated_at, delivered_at)
 `.trim()
@@ -92,10 +90,6 @@ const toOrder = (row: DbOrderRow): Order => ({
   branchId: row.branch_id,
   branchName: row.branch?.name ?? '',
   waiterId: row.waiter_id,
-  waiterName: row.employee?.first_name && row.employee?.last_name 
-  ? `${row.employee.first_name} ${row.employee.last_name}`
-  : '',
-  waiterRole: row.employee?.role ?? null,
   tableId: row.table_id,
   tableNumber: row.restaurant_table?.number ?? null,
   orderType: row.order_type as Order['orderType'],
@@ -187,6 +181,21 @@ export const getTablesByBranch = async (branchId: number): Promise<TableOption[]
 
   if (error) throw new Error(error.message)
   return data as TableOption[]
+}
+
+export const getEmployeeById = async (id: number): Promise<{ name: string; role: string | null }> => {
+  const { data, error } = await supabase
+    .from('employee')
+    .select('first_name, last_name, role')
+    .eq('id', id)
+    .single()
+
+  if (error) throw new Error(error.message)
+  const typed = data as any
+  return {
+    name: `${typed.first_name} ${typed.last_name}`,
+    role: typed.role,
+  }
 }
 
 // ─── Mutations ──────────────────────────────────────────────────────────────
