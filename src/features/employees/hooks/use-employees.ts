@@ -9,6 +9,7 @@ import {
   getEmployeeById,
   updateEmployee,
   getBranches,
+  getEmployeeWaiterInfo,
 } from '../data/employees-service'
 import { type Employee } from '../data/schema'
 
@@ -103,3 +104,11 @@ export const useDeleteEmployees = () => {
     },
   })
 }
+
+export const useEmployeeWaiterInfo = (waiterId: number) =>
+  useQuery({
+    queryKey: ['employee', 'waiter-info', waiterId],
+    queryFn: async (): Promise<{ firstName: string; lastName: string; role: string | null }> => {
+      return getEmployeeWaiterInfo(waiterId)
+    },
+  })

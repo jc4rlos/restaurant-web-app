@@ -1,12 +1,11 @@
 import { formatDistanceToNow } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { ChevronRight, MapPin, User } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { type Order } from '../data/schema'
 import { OrderStatusBadge } from './order-status-badge'
 import { OrderTypeBadge } from './order-type-badge'
-import { getEmployeeWaiterInfo } from '@/features/employees/data/employees-service'
+import { useEmployeeWaiterInfo } from '@/features/employees/hooks/use-employees'
 
 type Props = {
   order: Order
@@ -14,11 +13,7 @@ type Props = {
 }
 
 export const OrderCard = ({ order, onClick }: Props) => {
-const [waiterInfo, setWaiterInfo] = useState<{ firstName: string; lastName: string; role: string | null } | null>(null)
-
-  useEffect(() => {
-    getEmployeeWaiterInfo(order.waiterId).then(setWaiterInfo).catch(() => setWaiterInfo(null))
-  }, [order.waiterId])
+  const { data: waiterInfo } = useEmployeeWaiterInfo(order.waiterId)
 
   const timeAgo = formatDistanceToNow(new Date(order.orderedAt), {
     addSuffix: true,
