@@ -52,6 +52,13 @@ type DbOrderDeliveryRow = {
   delivered_at: string | null
 }
 
+
+type DbEmployee = {
+  first_name: string
+  last_name: string
+  role: string | null
+}
+
 const toOrderItem = (row: DbOrderItemRow): OrderItem => ({
   id: row.id,
   orderId: row.order_id,
@@ -183,6 +190,7 @@ export const getTablesByBranch = async (branchId: number): Promise<TableOption[]
   return data as TableOption[]
 }
 
+
 export const getEmployeeById = async (id: number): Promise<{ name: string; role: string | null }> => {
   const { data, error } = await supabase
     .from('employee')
@@ -191,10 +199,10 @@ export const getEmployeeById = async (id: number): Promise<{ name: string; role:
     .single()
 
   if (error) throw new Error(error.message)
-  const typed = data as any
+  const employee = data as DbEmployee
   return {
-    name: `${typed.first_name} ${typed.last_name}`,
-    role: typed.role,
+    name: `${employee.first_name} ${employee.last_name}`,
+    role: employee.role,
   }
 }
 
