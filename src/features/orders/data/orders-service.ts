@@ -186,21 +186,6 @@ export const getTablesByBranch = async (branchId: number): Promise<TableOption[]
 }
 
 
-export const getEmployeeById = async (id: number): Promise<{ name: string; role: string | null }> => {
-  const { data, error } = await supabase
-    .from('employee')
-    .select('first_name, last_name, role')
-    .eq('id', id)
-    .single()
-
-  if (error) throw new Error(error.message)
-  const employee = data as { first_name: string; last_name: string; role: string | null }
-  return {
-    name: `${employee.first_name} ${employee.last_name}`,
-    role: employee.role,
-  }
-}
-
 // ─── Mutations ──────────────────────────────────────────────────────────────
 
 export const createOrder = async (payload: CreateOrderPayload): Promise<Order> => {

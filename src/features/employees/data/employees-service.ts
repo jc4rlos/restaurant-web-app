@@ -83,6 +83,23 @@ export const getEmployeeById = async (id: number): Promise<Employee> => {
   return toEmployee(data as DbEmployee)
 }
 
+
+export const getEmployeeWaiterInfo = async (id: number): Promise<{ firstName: string; lastName: string; role: string | null }> => {
+  const { data, error } = await supabase
+    .from('employee')
+    .select('first_name, last_name, role')
+    .eq('id', id)
+    .single()
+
+  if (error) throw new Error(error.message)
+  const employee = data as DbEmployee
+  return {
+    firstName: employee.first_name,
+    lastName: employee.last_name,
+    role: employee.role,
+  }
+}
+
 export const createEmployee = async (
   payload: Omit<Employee, 'id'>
 ): Promise<Employee> => {

@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { type Order } from '../data/schema'
 import { OrderStatusBadge } from './order-status-badge'
 import { OrderTypeBadge } from './order-type-badge'
-import { getEmployeeById } from '../data/orders-service'
+import { getEmployeeWaiterInfo } from '@/features/employees/data/employees-service'
 
 type Props = {
   order: Order
@@ -14,10 +14,10 @@ type Props = {
 }
 
 export const OrderCard = ({ order, onClick }: Props) => {
-  const [waiterInfo, setWaiterInfo] = useState<{ name: string; role: string | null } | null>(null)
+const [waiterInfo, setWaiterInfo] = useState<{ firstName: string; lastName: string; role: string | null } | null>(null)
 
   useEffect(() => {
-    getEmployeeById(order.waiterId).then(setWaiterInfo).catch(() => setWaiterInfo(null))
+    getEmployeeWaiterInfo(order.waiterId).then(setWaiterInfo).catch(() => setWaiterInfo(null))
   }, [order.waiterId])
 
   const timeAgo = formatDistanceToNow(new Date(order.orderedAt), {
@@ -47,8 +47,8 @@ export const OrderCard = ({ order, onClick }: Props) => {
 
   const creatorInfo = waiterInfo
     ? waiterInfo.role
-      ? `${translateRole(waiterInfo.role)}: ${waiterInfo.name}`
-      : waiterInfo.name
+      ? `${translateRole(waiterInfo.role)}: ${waiterInfo.firstName} ${waiterInfo.lastName}`
+      : `${waiterInfo.firstName} ${waiterInfo.lastName}`
     : 'Cargando...'
 
   return (
