@@ -45,6 +45,8 @@ export const orderSchema = z.object({
   branchId: z.number(),
   branchName: z.string(),
   waiterId: z.number(),
+  waiterName: z.string(),
+  waiterRole: z.string().nullable(),
   tableId: z.number().nullable(),
   tableNumber: z.string().nullable(),
   orderType: z.enum(ORDER_TYPES),
