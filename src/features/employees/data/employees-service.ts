@@ -26,6 +26,12 @@ export type PaginatedEmployees = {
   total: number
 }
 
+export type WaiterInfo = {
+  firstName: string
+  lastName: string
+  role: string | null
+}
+
 const SELECT_FIELDS =
   'id, branch_id, first_name, last_name, document_number, role, phone, email, hire_date, is_active, auth_user_id'
 
@@ -81,6 +87,23 @@ export const getEmployeeById = async (id: number): Promise<Employee> => {
 
   if (error) throw new Error(error.message)
   return toEmployee(data as DbEmployee)
+}
+
+
+export const getEmployeeWaiterInfo = async (id: number): Promise<WaiterInfo> => {
+  const { data, error } = await supabase
+    .from('employee')
+    .select('first_name, last_name, role')
+    .eq('id', id)
+    .single()
+
+  if (error) throw new Error(error.message)
+  const employee = data as DbEmployee
+  return {
+    firstName: employee.first_name,
+    lastName: employee.last_name,
+    role: employee.role,
+  }
 }
 
 export const createEmployee = async (

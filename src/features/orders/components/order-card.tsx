@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { type Order } from '../data/schema'
 import { OrderStatusBadge } from './order-status-badge'
 import { OrderTypeBadge } from './order-type-badge'
+import { useEmployeeWaiterInfo } from '@/features/employees/hooks/use-employees'
 
 type Props = {
   order: Order
@@ -12,6 +13,8 @@ type Props = {
 }
 
 export const OrderCard = ({ order, onClick }: Props) => {
+  const { data: waiterInfo } = useEmployeeWaiterInfo(order.waiterId)
+
   const timeAgo = formatDistanceToNow(new Date(order.orderedAt), {
     addSuffix: true,
     locale: es,
@@ -23,6 +26,25 @@ export const OrderCard = ({ order, onClick }: Props) => {
       : order.orderType === 'DELIVERY'
         ? order.delivery?.district ?? order.customerName ?? 'Sin nombre'
         : order.customerName ?? 'Para recoger'
+
+  const translateRole = (role: string | null): string => {
+    if (!role) return ''
+    const roleMap: Record<string, string> = {
+      WAITER: 'Mesero',
+      COOK: 'Cocinero',
+      CASHIER: 'Cajero',
+      MANAGER: 'Gerente',
+      SUPERVISOR: 'Supervisor',
+      ADMIN: 'Administrador',
+    }
+    return roleMap[role] || role
+  }
+
+  const creatorInfo = waiterInfo
+    ? waiterInfo.role
+      ? `${translateRole(waiterInfo.role)}: ${waiterInfo.firstName} ${waiterInfo.lastName}`
+      : `${waiterInfo.firstName} ${waiterInfo.lastName}`
+    : 'Cargando...'
 
   return (
     <Card
@@ -50,6 +72,10 @@ export const OrderCard = ({ order, onClick }: Props) => {
               <User className='h-3.5 w-3.5 shrink-0' />
             )}
             <span className='truncate'>{subtitle}</span>
+          </div>
+          <div className='flex items-center gap-1 text-xs text-muted-foreground'>
+            <User className='h-3.5 w-3.5 shrink-0' />
+            <span className='truncate'>Pedido hecho por {creatorInfo}</span>
           </div>
 
           <div className='flex items-center justify-between'>

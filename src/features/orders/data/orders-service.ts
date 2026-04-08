@@ -52,6 +52,8 @@ type DbOrderDeliveryRow = {
   delivered_at: string | null
 }
 
+
+
 const toOrderItem = (row: DbOrderItemRow): OrderItem => ({
   id: row.id,
   orderId: row.order_id,
@@ -182,6 +184,7 @@ export const getTablesByBranch = async (branchId: number): Promise<TableOption[]
   if (error) throw new Error(error.message)
   return data as TableOption[]
 }
+
 
 // ─── Mutations ──────────────────────────────────────────────────────────────
 
