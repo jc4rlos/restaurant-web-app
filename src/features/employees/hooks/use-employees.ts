@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import {
   type EmployeesParams,
+  type WaiterInfo,
   createEmployee,
   deleteEmployees,
   deleteEmployee,
@@ -108,7 +109,7 @@ export const useDeleteEmployees = () => {
 export const useEmployeeWaiterInfo = (waiterId: number) =>
   useQuery({
     queryKey: ['employee', 'waiter-info', waiterId],
-    queryFn: async (): Promise<{ firstName: string; lastName: string; role: string | null }> => {
+    queryFn: async (): Promise<WaiterInfo> => {
       return getEmployeeWaiterInfo(waiterId)
     },
   })
