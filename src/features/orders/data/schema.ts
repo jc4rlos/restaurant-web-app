@@ -90,6 +90,19 @@ export const tableOptionSchema = z.object({
 })
 export type TableOption = z.infer<typeof tableOptionSchema>
 
+
+// ─── Filtros de Consulta ──────────────────────────────────────────────────
+
+export const ordersFilterSchema = z.object({
+  branchId: z.number().optional(),
+  status: z.enum(['ALL', ...ORDER_STATUSES]).optional(),
+  orderType: z.enum(['ALL', ...ORDER_TYPES]).optional(),
+  startDate: z.string().optional(), 
+  endDate: z.string().optional(),   
+})
+
+export type OrdersFilterParams = z.infer<typeof ordersFilterSchema>
+
 // ─── Form schemas per step ─────────────────────────────────────────────────
 
 export const typeStepSchema = z.object({

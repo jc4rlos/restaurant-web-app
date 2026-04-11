@@ -21,10 +21,16 @@ const OrdersContent = () => {
 
   const [statusFilter, setStatusFilter] = useState<OrderStatus | 'ALL'>('ALL')
   const [typeFilter, setTypeFilter] = useState<OrderType | 'ALL'>('ALL')
+  const [dateFilter, setDateFilter] = useState<string>(() => {
+  const today = new Date()
+  return today.toISOString().split('T')[0]
+  })
 
   const { data: orders = [], isLoading } = useOrders({
     status: statusFilter,
     orderType: typeFilter !== 'ALL' ? typeFilter : undefined,
+    startDate: dateFilter,
+    endDate: dateFilter,
   })
 
   return (
@@ -55,8 +61,10 @@ const OrdersContent = () => {
         <OrdersFilters
           statusFilter={statusFilter}
           typeFilter={typeFilter}
+          dateFilter={dateFilter}
           onStatusChange={setStatusFilter}
           onTypeChange={setTypeFilter}
+          onDateChange={setDateFilter}
         />
 
         <OrdersList orders={orders} isLoading={isLoading} onSelect={openDetail} />

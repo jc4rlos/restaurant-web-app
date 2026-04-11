@@ -47,7 +47,7 @@ export const OrderDetailSheet = ({ order, onClose }: Props) => {
         {order && (
           <>
             <SheetHeader className='border-b px-4 py-3'>
-              <div className='flex items-start justify-between gap-2'>
+              <div className='flex items-start justify-between gap-2 pr-7'>
                 <div>
                   <SheetTitle className='flex items-center gap-2'>
                     Pedido #{order.id}

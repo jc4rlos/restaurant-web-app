@@ -7,6 +7,7 @@ import {
   type OrderDelivery,
   type OrderStatus,
   type TableOption,
+  type OrdersFilterParams,
 } from './schema'
 
 // ─── Mappers ────────────────────────────────────────────────────────────────
@@ -107,11 +108,7 @@ const toOrder = (row: DbOrderRow): Order => ({
 
 // ─── Queries ────────────────────────────────────────────────────────────────
 
-export type GetOrdersFilter = {
-  branchId?: number
-  status?: OrderStatus | 'ALL'
-  orderType?: string
-}
+export type GetOrdersFilter = OrdersFilterParams
 
 export const getOrders = async (filter: GetOrdersFilter = {}): Promise<Order[]> => {
   let query = supabase
@@ -126,6 +123,14 @@ export const getOrders = async (filter: GetOrdersFilter = {}): Promise<Order[]> 
     query = query.eq('status', filter.status)
   if (filter.orderType && filter.orderType !== 'ALL')
     query = query.eq('order_type', filter.orderType as 'DINE_IN' | 'DELIVERY' | 'TAKEAWAY')
+  if (filter.startDate) {
+    const startDateTime = `${filter.startDate}T00:00:00`
+    query = query.gte('ordered_at', startDateTime)
+  }
+  if (filter.endDate) {
+    const endDateTime = `${filter.endDate}T23:59:59`
+    query = query.lte('ordered_at', endDateTime)
+  }
 
   const { data, error } = await query
   if (error) throw new Error(error.message)

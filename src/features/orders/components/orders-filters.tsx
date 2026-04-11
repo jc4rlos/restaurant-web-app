@@ -10,15 +10,19 @@ import { type OrderStatus, type OrderType } from '../data/schema'
 type Props = {
   statusFilter: OrderStatus | 'ALL'
   typeFilter: OrderType | 'ALL'
+  dateFilter: string
   onStatusChange: (v: OrderStatus | 'ALL') => void
   onTypeChange: (v: OrderType | 'ALL') => void
+  onDateChange: (v: string) => void
 }
 
 export const OrdersFilters = ({
   statusFilter,
   typeFilter,
+  dateFilter,
   onStatusChange,
   onTypeChange,
+  onDateChange,
 }: Props) => (
   <div className='flex flex-wrap gap-2'>
     <Select
@@ -54,5 +58,12 @@ export const OrdersFilters = ({
         <SelectItem value='DELIVERY'>Delivery</SelectItem>
       </SelectContent>
     </Select>
+
+    <input
+      type='date'
+      value={dateFilter}
+      onChange={(e) => onDateChange(e.target.value)}
+      className='h-8 rounded-md border border-input bg-background px-3 text-sm'
+    />
   </div>
 )
