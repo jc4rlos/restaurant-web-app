@@ -153,7 +153,12 @@ function buildPayload(
   }
 
   if (details.type === 'TAKEAWAY') {
-    return { ...base, notes: details.notes }
+    return {
+      ...base,
+      customerName: details.takeaway.customerName,
+      customerPhone: details.takeaway.customerPhone,
+      notes: details.notes,
+    }
   }
 
   // DELIVERY

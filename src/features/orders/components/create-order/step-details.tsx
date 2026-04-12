@@ -117,6 +117,29 @@ const TakeawayForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className='flex flex-col gap-4'
       >
+        <div className='grid grid-cols-2 gap-3'>
+          <FormField
+            control={form.control}
+            name='customerName'
+            render={({ field }) => (
+              <FormItem className='col-span-2'>
+                <FormLabel>Nombre del cliente *</FormLabel>
+                <Input placeholder='Juan Pérez' {...field} />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+            <FormField
+              control={form.control}
+              name='customerPhone'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Teléfono</FormLabel>
+                  <Input placeholder='987654321' {...field} />
+                </FormItem>
+              )}
+            />
+        </div>
         <FormField
           control={form.control}
           name='notes'
@@ -278,7 +301,7 @@ export const StepDetails = ({
       <TakeawayForm
         isSubmitting={isSubmitting}
         onBack={onBack}
-        onSubmit={(v) => onNext({ type: 'TAKEAWAY', ...v })}
+        onSubmit={(v) => onNext({ type: 'TAKEAWAY', takeaway: v, notes: v.notes })}
       />
     )
   }

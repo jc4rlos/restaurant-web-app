@@ -118,6 +118,8 @@ export const dineInDetailsSchema = z.object({
 export type DineInDetailsValues = z.infer<typeof dineInDetailsSchema>
 
 export const takeawayDetailsSchema = z.object({
+  customerName: z.string().min(1, 'El nombre es requerido.'),
+  customerPhone: z.string().optional(),
   notes: z.string().optional(),
 })
 export type TakeawayDetailsValues = z.infer<typeof takeawayDetailsSchema>
@@ -136,7 +138,7 @@ export type DeliveryDetailsValues = z.infer<typeof deliveryDetailsSchema>
 // Assembled details output from DetailsStep
 export type OrderDetails =
   | { type: 'DINE_IN'; tableId: number; notes?: string }
-  | { type: 'TAKEAWAY'; notes?: string }
+  | { type: 'TAKEAWAY'; takeaway: TakeawayDetailsValues; notes?: string }
   | { type: 'DELIVERY'; delivery: DeliveryDetailsValues; notes?: string }
 
 // Full create payload sent to the service
