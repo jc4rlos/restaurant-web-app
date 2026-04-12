@@ -9,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -45,8 +44,7 @@ export const StepType = ({ defaultValues, onNext }: Props) => {
     defaultValues: defaultValues ?? { orderType: 'DINE_IN' },
   })
 
-  const orderType = form.watch('orderType')
-
+  
   return (
     <Form {...form}>
       <form
