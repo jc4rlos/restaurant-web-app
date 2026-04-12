@@ -114,34 +114,6 @@ export const StepType = ({ defaultValues, onNext }: Props) => {
           )}
         />
 
-        {/* Optional customer info for TAKEAWAY / DELIVERY */}
-        {orderType !== 'DINE_IN' && (
-          <div className='grid grid-cols-2 gap-3'>
-            <FormField
-              control={form.control}
-              name='customerName'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nombre del cliente</FormLabel>
-                  <Input placeholder='Ej: Juan Pérez' {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='customerPhone'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Teléfono</FormLabel>
-                  <Input placeholder='987654321' {...field} />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        )}
-
         <Button type='submit' form='step-type-form' className='w-full'>
           Continuar
         </Button>

@@ -140,8 +140,6 @@ function buildPayload(
     branchId: typeValues.branchId,
     waiterId,
     orderType: typeValues.orderType,
-    customerName: typeValues.customerName,
-    customerPhone: typeValues.customerPhone,
     items: cart.map((i) => ({
       dishId: i.dishId,
       quantity: i.quantity,
@@ -161,6 +159,8 @@ function buildPayload(
   // DELIVERY
   return {
     ...base,
+    customerName: details.delivery.recipientName,     
+    customerPhone: details.delivery.phone,              
     notes: details.notes,
     delivery: {
       recipientName: details.delivery.recipientName,

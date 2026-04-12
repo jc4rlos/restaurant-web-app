@@ -108,8 +108,6 @@ export type OrdersFilterParams = z.infer<typeof ordersFilterSchema>
 export const typeStepSchema = z.object({
   orderType: z.enum(ORDER_TYPES),
   branchId: z.number({ error: 'Selecciona una sucursal.' }),
-  customerName: z.string().optional(),
-  customerPhone: z.string().optional(),
 })
 export type TypeStepValues = z.infer<typeof typeStepSchema>
 
