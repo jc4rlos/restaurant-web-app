@@ -6,7 +6,8 @@ import {
   ShieldCheck,
   UtensilsCrossed,
   Users,
-  HandPlatter,  
+  HandPlatter,
+  Store,  
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -18,7 +19,8 @@ const ICON_MAP: Record<string, LucideIcon> = {
   CalendarDays,
   ClipboardList,
   ShieldCheck,
-  HandPlatter,  
+  HandPlatter,
+  Store,  
 }
 
 export const resolveIcon = (name: string | null): LucideIcon | undefined =>

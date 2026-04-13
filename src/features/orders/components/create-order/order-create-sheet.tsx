@@ -140,8 +140,6 @@ function buildPayload(
     branchId: typeValues.branchId,
     waiterId,
     orderType: typeValues.orderType,
-    customerName: typeValues.customerName,
-    customerPhone: typeValues.customerPhone,
     items: cart.map((i) => ({
       dishId: i.dishId,
       quantity: i.quantity,
@@ -155,12 +153,19 @@ function buildPayload(
   }
 
   if (details.type === 'TAKEAWAY') {
-    return { ...base, notes: details.notes }
+    return {
+      ...base,
+      customerName: details.takeaway.customerName,
+      customerPhone: details.takeaway.customerPhone,
+      notes: details.notes,
+    }
   }
 
   // DELIVERY
   return {
     ...base,
+    customerName: details.delivery.recipientName,     
+    customerPhone: details.delivery.phone,              
     notes: details.notes,
     delivery: {
       recipientName: details.delivery.recipientName,

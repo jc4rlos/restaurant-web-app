@@ -25,6 +25,7 @@ import { Route as authChangePasswordRouteImport } from './routes/(auth)/change-p
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedTablesIndexRouteImport } from './routes/_authenticated/tables/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedOrdersIndexRouteImport } from './routes/_authenticated/orders/index'
 import { Route as AuthenticatedEmployeesIndexRouteImport } from './routes/_authenticated/employees/index'
 import { Route as AuthenticatedDishesIndexRouteImport } from './routes/_authenticated/dishes/index'
@@ -119,6 +120,12 @@ const AuthenticatedSettingsIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
+const AuthenticatedProductsIndexRoute =
+  AuthenticatedProductsIndexRouteImport.update({
+    id: '/products/',
+    path: '/products/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOrdersIndexRoute =
   AuthenticatedOrdersIndexRouteImport.update({
     id: '/orders/',
@@ -211,6 +218,7 @@ export interface FileRoutesByFullPath {
   '/dishes/': typeof AuthenticatedDishesIndexRoute
   '/employees/': typeof AuthenticatedEmployeesIndexRoute
   '/orders/': typeof AuthenticatedOrdersIndexRoute
+  '/products/': typeof AuthenticatedProductsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tables/': typeof AuthenticatedTablesIndexRoute
 }
@@ -238,6 +246,7 @@ export interface FileRoutesByTo {
   '/dishes': typeof AuthenticatedDishesIndexRoute
   '/employees': typeof AuthenticatedEmployeesIndexRoute
   '/orders': typeof AuthenticatedOrdersIndexRoute
+  '/products': typeof AuthenticatedProductsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tables': typeof AuthenticatedTablesIndexRoute
 }
@@ -268,6 +277,7 @@ export interface FileRoutesById {
   '/_authenticated/dishes/': typeof AuthenticatedDishesIndexRoute
   '/_authenticated/employees/': typeof AuthenticatedEmployeesIndexRoute
   '/_authenticated/orders/': typeof AuthenticatedOrdersIndexRoute
+  '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tables/': typeof AuthenticatedTablesIndexRoute
 }
@@ -298,6 +308,7 @@ export interface FileRouteTypes {
     | '/dishes/'
     | '/employees/'
     | '/orders/'
+    | '/products/'
     | '/settings/'
     | '/tables/'
   fileRoutesByTo: FileRoutesByTo
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
     | '/dishes'
     | '/employees'
     | '/orders'
+    | '/products'
     | '/settings'
     | '/tables'
   id:
@@ -354,6 +366,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dishes/'
     | '/_authenticated/employees/'
     | '/_authenticated/orders/'
+    | '/_authenticated/products/'
     | '/_authenticated/settings/'
     | '/_authenticated/tables/'
   fileRoutesById: FileRoutesById
@@ -487,6 +500,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
+    '/_authenticated/products/': {
+      id: '/_authenticated/products/'
+      path: '/products'
+      fullPath: '/products/'
+      preLoaderRoute: typeof AuthenticatedProductsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/orders/': {
       id: '/_authenticated/orders/'
       path: '/orders'
@@ -602,6 +622,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDishesIndexRoute: typeof AuthenticatedDishesIndexRoute
   AuthenticatedEmployeesIndexRoute: typeof AuthenticatedEmployeesIndexRoute
   AuthenticatedOrdersIndexRoute: typeof AuthenticatedOrdersIndexRoute
+  AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedTablesIndexRoute: typeof AuthenticatedTablesIndexRoute
 }
 
@@ -614,6 +635,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDishesIndexRoute: AuthenticatedDishesIndexRoute,
   AuthenticatedEmployeesIndexRoute: AuthenticatedEmployeesIndexRoute,
   AuthenticatedOrdersIndexRoute: AuthenticatedOrdersIndexRoute,
+  AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedTablesIndexRoute: AuthenticatedTablesIndexRoute,
 }
 
